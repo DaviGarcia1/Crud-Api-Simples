@@ -1,8 +1,10 @@
 const form = document.querySelector('#form-user')
 const input = document.querySelector('#input-user')
 const lista = document.querySelector('#lista-user')
-const url = 'https://crudcrud.com/api/5bf7713dbbd44f9ea0100c9bf9344b0f/users'
-
+const url = 'https://crudcrud.com/api/a4138494e8684fd884c5bf32bfe0ab8f/users' //sempre que puder, atualize o link no site crudcrud.com e pegue outro link adicionando /users no final. A versão gratuita não dura muito tempo. 
+const loadContainer = document.querySelector('#loading')
+const buttonCadastrar = document.querySelector('#button-cadastrar')
+let isLoading = false
 window.addEventListener('load', () => {
     showUsers()
 })
@@ -50,7 +52,9 @@ const showUsers = () => {
 }
 
 const criarUserFetch = (nome) => {
-        fetch(url, {
+    loading()
+    
+    fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -61,6 +65,7 @@ const criarUserFetch = (nome) => {
     })
     .then(() => {
         window.location.reload()
+        notLoading()
     })
 }
 
@@ -94,6 +99,20 @@ const deletarUser = (userId, userName) => {
             window.location.reload()
         })
     }
+}
+
+const loading = () => {
+    isLoading = true
+    lista.style.display = 'none'
+    loadContainer.style.display = 'block'
+    buttonCadastrar.setAttribute('disabled', 'true')
+}
+
+const notLoading = () => {
+    isLoading = false
+    lista.style.display = 'block'
+    loadContainer.style.display = 'none'
+    buttonCadastrar.removeAttribute('disabled')
 }
 
 form.addEventListener('submit', (e) => {
